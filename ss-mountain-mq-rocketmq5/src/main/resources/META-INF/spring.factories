@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.sunnysuperman.mountain.mq.rocketmq5.RocketMQ5AutoConfiguration

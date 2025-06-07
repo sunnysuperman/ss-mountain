@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.sunnysuperman.mountain.swagger2.SwaggerAutoConfiguration

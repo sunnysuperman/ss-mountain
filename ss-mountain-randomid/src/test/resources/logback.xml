@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<configuration scan="false">
+	<property name="log.dir" value="logs" />
+	<appender name="console"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%date %-5level [%thread] - %msg%n
+			</pattern>
+		</encoder>
+
+	</appender>
+	<appender name="default"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.dir}/default.log</file>
+		<encoder>
+			<pattern>%date %-5level [%thread] - %msg%n
+			</pattern>
+		</encoder>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.dir}/history/default.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>5</maxHistory>
+			<totalSizeCap>5GB</totalSizeCap>
+		</rollingPolicy>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="console" />
+		<appender-ref ref="default" />
+	</root>
+</configuration>

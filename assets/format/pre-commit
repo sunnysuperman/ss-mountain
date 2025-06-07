@@ -1,0 +1,22 @@
+#!/bin/bash
+set -e
+
+files=$(git --no-pager diff --name-status --no-color --cached | awk '$1 != "D" { print $NF}')
+filesString=''
+for fileToAdd in $files
+do
+	if [ ! -z "$filesString" ]
+	then
+		filesString+=','
+	fi
+	filesString+=$(pwd)/$fileToAdd
+done;
+
+echo "formatting: $filesString"
+mvn spotless:apply -DspotlessFiles=$filesString
+
+for fileToAdd in $files
+do
+  echo "re-adding $fileToAdd after formatting"
+  git add $fileToAdd
+done;
