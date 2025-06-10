@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 
 import com.sunnysuperman.mountain.lang.exception.Exceptions;
+import com.sunnysuperman.mountain.lang.id.ObjectIdGenerator;
 import com.sunnysuperman.mountain.lang.id.ObjectIdGeneratorFactory;
-import com.sunnysuperman.mountain.lang.id.ObjectIdGeneratorFactory.ObjectIdGenerator;
 import com.sunnysuperman.mountain.lang.utils.IOUtil;
 import com.sunnysuperman.mountain.lang.utils.Str;
 

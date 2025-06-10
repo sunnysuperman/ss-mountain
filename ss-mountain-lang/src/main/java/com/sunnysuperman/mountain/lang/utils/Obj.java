@@ -16,7 +16,7 @@ import com.sunnysuperman.mountain.lang.exception.UnexpectedException;
 
 public final class Obj {
 
-	protected Obj() {
+	private Obj() {
 	}
 
 	public static <T> T or(T obj, T defaults) {
@@ -129,6 +129,9 @@ public final class Obj {
 		}
 		if (value.getClass().isArray()) {
 			return Array.getLength(value) == 0;
+		}
+		if (value instanceof Map) {
+			return ((Map<?, ?>) value).isEmpty();
 		}
 		return false;
 	}

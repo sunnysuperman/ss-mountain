@@ -111,28 +111,28 @@ public abstract class AbstractApiMock implements ApiMock {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public final <T extends ApiMock> T get(String api, Object... params) {
+	public <T extends ApiMock> T get(String api, Object... params) {
 		request("GET", api, paramsAsMap(params), wrapHeaders());
 		return (T) this;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public final <T extends ApiMock> T post(String api, Object... params) {
+	public <T extends ApiMock> T post(String api, Object... params) {
 		post(api, paramsAsMap(params), wrapHeaders());
 		return (T) this;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public final <T extends ApiMock> T post(String api, Map<String, Object> params) {
+	public <T extends ApiMock> T post(String api, Map<String, Object> params) {
 		post(api, params, wrapHeaders());
 		return (T) this;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public final <T extends ApiMock> T postJSON(String api, Object body) {
+	public <T extends ApiMock> T postJSON(String api, Object body) {
 		String bodyAsString = body == null ? null : Jsons.write(body);
 		String url = wrapUrl(api);
 		log("POST: " + api + "\n" + bodyAsString);

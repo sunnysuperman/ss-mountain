@@ -8,8 +8,8 @@ import com.sunnysuperman.mountain.db.DeserializeContext;
 import com.sunnysuperman.mountain.db.FieldConverter;
 import com.sunnysuperman.mountain.db.MultiColumn;
 import com.sunnysuperman.mountain.db.SerializeContext;
+import com.sunnysuperman.mountain.lang.id.ObjectIdGenerator;
 import com.sunnysuperman.mountain.lang.id.ObjectIdGeneratorFactory;
-import com.sunnysuperman.mountain.lang.id.ObjectIdGeneratorFactory.ObjectIdGenerator;
 import com.sunnysuperman.mountain.lang.pagination.MarkerUtils;
 import com.sunnysuperman.mountain.lang.utils.Num;
 

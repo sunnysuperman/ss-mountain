@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.sunnysuperman.mountain.lang.exception.UnexpectedException;
+import com.sunnysuperman.mountain.lang.utils.Str;
 
 public class PullPage<T> {
 	protected List<T> content;
@@ -15,8 +16,8 @@ public class PullPage<T> {
 			content = Collections.emptyList();
 		}
 		if (hasMore) {
-			if (marker == null) {
-				throw new UnexpectedException("marker should not be null if hasMore");
+			if (Str.isEmpty(marker)) {
+				throw new UnexpectedException("marker should not be null if has more");
 			}
 		} else {
 			marker = null;
@@ -26,6 +27,10 @@ public class PullPage<T> {
 		pr.marker = marker;
 		pr.hasMore = hasMore;
 		return pr;
+	}
+
+	public static <T> PullPage<T> of(List<T> content) {
+		return of(content, null, false);
 	}
 
 	public static <T> PullPage<T> empty() {
