@@ -7,15 +7,14 @@
 		<artifactId>ss-mountain</artifactId>
 		<version>2.6</version>
 	</parent>
-	<artifactId>ss-mountain-lang</artifactId>
-	<name>${project.artifactId}</name>
-	<packaging>jar</packaging>
+	<artifactId>ss-mountain-excel</artifactId>
+
 
 	<dependencies>
-		<!-- 测试 -->
+		<!-- test -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter</artifactId>
+			<artifactId>junit-jupiter-engine</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -23,27 +22,15 @@
 			<artifactId>logback-classic</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- 其他 -->
+
+		<!-- compile -->
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.reflections</groupId>
-			<artifactId>reflections</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-			<optional>true</optional>
+			<groupId>com.monitorjbl</groupId>
+			<artifactId>xlsx-streamer</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.sunnysuperman</groupId>
-			<artifactId>ss-validation-api</artifactId>
+			<artifactId>ss-mountain-lang</artifactId>
 		</dependency>
 	</dependencies>
 

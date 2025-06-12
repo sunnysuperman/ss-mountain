@@ -74,6 +74,7 @@ public final class PlaceholderUtil {
 		return buf.toString();
 	}
 
+	@SuppressWarnings("squid:S3776")
 	public static final String compile(final String s, Map<String, Object> context, CompileOptions options,
 			CompileHandler handler) {
 		if (s == null) {

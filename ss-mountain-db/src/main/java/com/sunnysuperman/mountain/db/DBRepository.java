@@ -61,6 +61,7 @@ public abstract class DBRepository {
 		return new SqlAndParams(buf.toString(), params.toArray(new Object[params.size()]));
 	}
 
+	@SuppressWarnings("squid:S3776")
 	protected SqlAndParams getUpdateDialect(String tableName, Map<String, ?> doc, String[] filterColumns,
 			Object[] filterValues) {
 		StringBuilder sql = new StringBuilder("update ");

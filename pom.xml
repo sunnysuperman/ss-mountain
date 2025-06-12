@@ -194,6 +194,11 @@
 				<artifactId>ss-mountain-randomid</artifactId>
 				<version>${ss-mountain.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.sunnysuperman</groupId>
+				<artifactId>ss-mountain-excel</artifactId>
+				<version>${ss-mountain.version}</version>
+			</dependency>
 
 			<!-- others -->
 			<dependency>
@@ -325,6 +330,7 @@
 		<module>ss-mountain-file</module>
 		<module>ss-mountain-export</module>
 		<module>ss-mountain-randomid</module>
+		<module>ss-mountain-excel</module>
 	</modules>
 
 </project>

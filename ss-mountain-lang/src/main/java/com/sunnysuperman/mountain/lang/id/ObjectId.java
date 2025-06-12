@@ -85,6 +85,7 @@ public final class ObjectId implements Comparable<ObjectId> {
 	 * @return whether the string could be an object id
 	 * @throws IllegalArgumentException if hexString is null
 	 */
+	@SuppressWarnings("squid:S135")
 	public static boolean isValid(final String hexString) {
 		if (hexString == null) {
 			throw new IllegalArgumentException();
@@ -367,6 +368,7 @@ public final class ObjectId implements Comparable<ObjectId> {
 		}
 	}
 
+	@SuppressWarnings("squid:S1141")
 	private static int createMachineIdentifier() {
 		// build a 2-byte machine piece based on NICs info
 		int machinePiece;
