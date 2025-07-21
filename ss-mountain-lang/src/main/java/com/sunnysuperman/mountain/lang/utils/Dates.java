@@ -2,6 +2,14 @@ package com.sunnysuperman.mountain.lang.utils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQueries;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -11,13 +19,25 @@ import com.sunnysuperman.mountain.lang.exception.FormatException;
 public final class Dates {
 	public static final TimeZone DEFAULT_TIMEZONE = TimeZone.getDefault();
 	public static final TimeZone GMT_TIMEZONE = TimeZone.getTimeZone("GMT");
-	public static final String ISO8601DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-	public static final String ISO8601DATE_WITH_MILLS_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-	public static final String ISO8601DATE_WITH_MILLS_TIMEZONE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
-	public static final String ISO8601DATE_WITH_ZONE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
-	public static final String ISO8601DATE_WITH_ZONE_MILLS_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSX";
-	public static final String DATE_FORMAT = "yyyy-MM-dd";
-	public static final int ISO8601DATE_FORMAT_VALUE_LENGTH = ISO8601DATE_FORMAT.length() - 4;
+	private static final String DATE_FORMAT = "yyyy-MM-dd";
+	private static final String ISO8601DATE_WITH_MILLS_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+	private static final DateTimeFormatter[] FORMATTERS = {
+			// 1. 标准带时区格式（带冒号）
+			DateTimeFormatter.ISO_OFFSET_DATE_TIME,
+
+			// 2. 自定义时区格式处理器（处理各种时区变体）
+			new DateTimeFormatterBuilder().append(DateTimeFormatter.ISO_LOCAL_DATE).appendLiteral('T')
+					.append(DateTimeFormatter.ISO_LOCAL_TIME).appendPattern("[XXX][XX][X]") // 同时匹配 +08:00, +0800, +08
+					.toFormatter(),
+
+			// 3. 不带时区但带毫秒
+			DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"),
+
+			// 4. 不带时区不带毫秒
+			DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"),
+
+			// 5. 仅日期
+			DateTimeFormatter.ISO_LOCAL_DATE };
 
 	private Dates() {
 	}
@@ -114,6 +134,33 @@ public final class Dates {
 		return parseDate(d, null);
 	}
 
+	public static Date parseISO8601Date(String s, TimeZone tz) throws FormatException {
+		if (s == null || s.isEmpty()) {
+			return null;
+		}
+		if (tz == null) {
+			tz = DEFAULT_TIMEZONE;
+		}
+		for (DateTimeFormatter formatter : FORMATTERS) {
+			try {
+				TemporalAccessor parsed = formatter.parse(s);
+				if (parsed.query(TemporalQueries.offset()) != null) {
+					// 带时区的情况
+					return Date.from(parsed.query(ZonedDateTime::from).toInstant());
+				} else if (parsed.isSupported(ChronoField.HOUR_OF_DAY)) {
+					// 不带时区但有时间
+					return Date.from(LocalDateTime.from(parsed).atZone(tz.toZoneId()).toInstant());
+				} else {
+					// 仅日期
+					return Date.from(LocalDate.from(parsed).atStartOfDay(tz.toZoneId()).toInstant());
+				}
+			} catch (Exception e) {
+				// 忽略，尝试下一个格式
+			}
+		}
+		throw new FormatException("Failed to parse date: " + s);
+	}
+
 	/** 只解析日期 **/
 	public static final Date parseDateOnly(String s) throws FormatException {
 		if (Str.isEmpty(s)) {
@@ -129,35 +176,6 @@ public final class Dates {
 			throw new FormatException("Bad date string: " + s);
 		}
 		return parseDate(s, DATE_FORMAT);
-	}
-
-	public static Date parseISO8601Date(String s, TimeZone tz) throws FormatException {
-		if (s == null || s.isEmpty()) {
-			return null;
-		}
-		try {
-			Date date;
-			if (s.charAt(s.length() - 1) == 'Z') {
-				String format = (s.length() == ISO8601DATE_FORMAT_VALUE_LENGTH) ? ISO8601DATE_FORMAT
-						: ISO8601DATE_WITH_MILLS_FORMAT;
-				DateFormat dateFormat = new SimpleDateFormat(format);
-				dateFormat.setTimeZone(GMT_TIMEZONE);
-				date = dateFormat.parse(s);
-			} else if (s.length() == DATE_FORMAT.length()) {
-				DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-				dateFormat.setTimeZone(tz != null ? tz : TimeZone.getDefault());
-				date = dateFormat.parse(s);
-			} else if (s.indexOf('.') >= 0) {
-				date = new SimpleDateFormat(ISO8601DATE_WITH_ZONE_MILLS_FORMAT).parse(s);
-			} else if (s.indexOf('T') >= 0) {
-				date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(s);
-			} else {
-				date = new SimpleDateFormat(ISO8601DATE_WITH_ZONE_FORMAT).parse(s);
-			}
-			return date;
-		} catch (Exception e) {
-			throw new FormatException("Failed to parseISO8601Date: " + s, e);
-		}
 	}
 
 	public static final String format(Date date, String format) {

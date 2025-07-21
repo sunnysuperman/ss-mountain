@@ -277,23 +277,16 @@ public final class Str {
 	}
 
 	/**
-	 * 用逗号分割字符串
-	 * 
-	 * @param str 要分割的字符串
-	 * @return 分割后的字符串列表
-	 */
-	public static List<String> split(final String str) {
-		return split(str, COMMA);
-	}
-
-	/**
 	 * 按照字面分隔符分割字符串
 	 * 
-	 * @param str       要分割的字符串
-	 * @param delimiter 分隔符（字面值，不作为正则表达式处理）
+	 * @param str           要分割的字符串
+	 * @param delimiter     分隔符（字面值，不作为正则表达式处理）
+	 * @param limit         最大分割次数(<=0表示不限)
+	 * @param preserveEmpty 是否保留分隔的空字串(开头结尾的不保留)
 	 * @return 分割后的字符串列表
 	 */
-	public static List<String> split(final String str, final String delimiter) {
+	public static List<String> split(final String str, final String delimiter, final int limit,
+			final boolean preserveEmpty) {
 		if (isEmpty(str) || isEmpty(delimiter)) {
 			return Collections.emptyList();
 		}
@@ -301,12 +294,19 @@ public final class Str {
 		int delimiterLength = delimiter.length();
 		int start = 0;
 		int end;
+		boolean stopped = false;
 		while ((end = str.indexOf(delimiter, start)) != -1) {
-			result.add(str.substring(start, end));
+			if (end > start || (preserveEmpty && start > 0)) {
+				result.add(str.substring(start, end));
+				if (limit > 0 && result.size() >= limit) {
+					stopped = true;
+					break;
+				}
+			}
 			start = end + delimiterLength;
 		}
 		// 添加最后一个部分
-		if (start < str.length()) {
+		if (!stopped && start < str.length()) {
 			result.add(str.substring(start));
 		}
 		return result;
@@ -316,33 +316,33 @@ public final class Str {
 	 * 按照字面分隔符分割字符串，并限制分割次数
 	 * 
 	 * @param str       要分割的字符串
-	 * @param delimiter 分隔符（字面值，不作为正则表达式处理）
+	 * @param delimiter 分隔符
 	 * @param limit     最大分割次数(<=0表示不限)
 	 * @return 分割后的字符串列表
 	 */
 	public static List<String> split(String str, String delimiter, int limit) {
-		// 不限次数
-		if (limit <= 0) {
-			return split(str, delimiter);
-		}
-		if (isEmpty(str) || isEmpty(delimiter)) {
-			return Collections.emptyList();
-		}
-		List<String> result = new ArrayList<>();
-		int delimiterLength = delimiter.length();
-		int start = 0;
-		int end;
-		int count = 0;
-		while (count < limit && (end = str.indexOf(delimiter, start)) != -1) {
-			result.add(str.substring(start, end));
-			start = end + delimiterLength;
-			count++;
-		}
-		// 添加最后一个部分（如果还有剩余且结果数量未达到limit）
-		if (count < limit && start < str.length()) {
-			result.add(str.substring(start));
-		}
-		return result;
+		return split(str, delimiter, limit, false);
+	}
+
+	/**
+	 * 按照字面分隔符分割字符串
+	 * 
+	 * @param str       要分割的字符串
+	 * @param delimiter 分隔符
+	 * @return 分割后的字符串列表
+	 */
+	public static List<String> split(String str, String delimiter) {
+		return split(str, delimiter, -1, false);
+	}
+
+	/**
+	 * 用逗号分割字符串
+	 * 
+	 * @param str 要分割的字符串
+	 * @return 分割后的字符串列表
+	 */
+	public static List<String> split(final String str) {
+		return split(str, COMMA, -1, false);
 	}
 
 	/** 拼接(逗号分隔) **/

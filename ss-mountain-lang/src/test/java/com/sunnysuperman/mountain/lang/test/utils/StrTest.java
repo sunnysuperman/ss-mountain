@@ -288,8 +288,15 @@ class StrTest {
 		assertEquals(Collections.emptyList(), Str.split(""));
 		assertEquals(Collections.emptyList(), Str.split(null));
 
+		// 测试字串不包含分隔符
+		assertEquals(Arrays.asList("abc"), Str.split("abc"));
+
 		// 测试默认分隔符
 		assertEquals(Arrays.asList("a", "b", "c"), Str.split("a,b,c"));
+		assertEquals(Arrays.asList("a", "b", "c"), Str.split(",a,b,c"));
+		assertEquals(Arrays.asList("a", "b", "c"), Str.split(",a,b,c,"));
+		assertEquals(Arrays.asList("a", "b", "c"), Str.split(",a,b,c,,"));
+		assertEquals(Arrays.asList("a", "b", "c"), Str.split(",a,,b,c,,"));
 
 		// 测试自定义分隔符
 		assertEquals(Arrays.asList("a", "bc", "d"), Str.split("a|bc|d", "|"));
@@ -305,6 +312,7 @@ class StrTest {
 
 		// 基本测试
 		assertEquals(Arrays.asList("a", "b"), Str.split("a,b,c", ",", 2));
+		assertEquals(Arrays.asList("a", "b"), Str.split(",,a,b,c", ",", 2));
 		assertEquals(Arrays.asList("a"), Str.split("a,b,c", ",", 1));
 
 		// 限制大于实际分割次数
@@ -317,6 +325,19 @@ class StrTest {
 		// 不限
 		assertEquals(Arrays.asList("a", "bc", "d"), Str.split("a,bc,d", ",", -1));
 		assertEquals(Arrays.asList("a", "bc", "d"), Str.split("a,bc,d", ",", 0));
+	}
+
+	@Test
+	void testSplitWithEmptyToken() {
+		// 空字串在中间
+		assertEquals(Arrays.asList("a", "b", "", "c"), Str.split("a,b,,c", ",", -1, true));
+		assertEquals(Arrays.asList("", "a", "b", "c"), Str.split(",,a,b,c", ",", -1, true));
+		assertEquals(Arrays.asList("a", "b", "c", ""), Str.split("a,b,c,,", ",", -1, true));
+		assertEquals(Arrays.asList("", "a", "b", "c", ""), Str.split(",,a,b,c,,", ",", -1, true));
+		// 空字串在开头
+		assertEquals(Arrays.asList("a", "b", "c"), Str.split(",a,b,c", ",", -1, true));
+		// 空字串在结尾
+		assertEquals(Arrays.asList("a", "b", "c"), Str.split("a,b,c,", ",", -1, true));
 	}
 
 	@Test

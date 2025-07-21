@@ -27,11 +27,11 @@ public abstract class AbstractController {
 		return Num.parseIntValue(i, defaultValue);
 	}
 
-	protected static boolean parseBoolean(String b) {
+	protected static boolean parseBool(String b) {
 		return Bool.parseBoolValue(b, false);
 	}
 
-	protected static boolean parseBoolean(String b, boolean defaultValue) {
+	protected static boolean parseBool(String b, boolean defaultValue) {
 		return Bool.parseBoolValue(b, defaultValue);
 	}
 

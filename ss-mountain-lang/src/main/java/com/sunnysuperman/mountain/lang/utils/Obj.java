@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import org.springframework.beans.BeanUtils;
@@ -24,6 +25,14 @@ public final class Obj {
 			return obj;
 		}
 		return defaults;
+	}
+
+	public static boolean equals(Object o1, Object o2) {
+		return Objects.equals(o1, o2);
+	}
+
+	public static boolean notEquals(Object o1, Object o2) {
+		return !Objects.equals(o1, o2);
 	}
 
 	@SuppressWarnings("unchecked")

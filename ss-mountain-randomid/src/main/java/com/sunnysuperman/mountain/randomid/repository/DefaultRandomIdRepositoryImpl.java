@@ -1,5 +1,6 @@
 package com.sunnysuperman.mountain.randomid.repository;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +32,12 @@ public abstract class DefaultRandomIdRepositoryImpl extends PrimarySimpleDBRepos
 				throw new RepositoryException("Failed to update id sequence");
 			}
 			int remainingNum = totalNum - num - Num.parseInteger(row.get("idx"));
-			return new PopSegmentsResult(Str.split(Str.parse(row.get("v")), ","), remainingNum);
+			String segmentsAsStr = Str.parse(row.get("v"));
+			if (Str.isEmpty(segmentsAsStr)) {
+				return new PopSegmentsResult(Collections.emptyList(), 0);
+			}
+			List<String> segmentList = Str.split(segmentsAsStr, Str.COMMA);
+			return new PopSegmentsResult(segmentList, remainingNum);
 		}
 
 		String segments = createSegments(bits);
@@ -42,7 +48,7 @@ public abstract class DefaultRandomIdRepositoryImpl extends PrimarySimpleDBRepos
 		row.put("idx", num);
 		insertDoc(getTable(), row);
 
-		List<String> segmentList = Str.split(segments, ",", num);
+		List<String> segmentList = Str.split(segments, Str.COMMA, num);
 		return new PopSegmentsResult(segmentList, totalNum - num);
 	}
 

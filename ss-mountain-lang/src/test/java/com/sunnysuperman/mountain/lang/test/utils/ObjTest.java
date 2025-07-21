@@ -1,7 +1,9 @@
 package com.sunnysuperman.mountain.lang.test.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -174,6 +176,28 @@ class ObjTest {
 			this.anotherUnit = anotherUnit;
 		}
 
+	}
+
+	@Test
+	void testEquals() {
+		assertTrue(Obj.equals("1", "1"));
+		assertTrue(Obj.equals("", ""));
+		assertTrue(Obj.equals(null, null));
+
+		assertFalse(Obj.equals("1", "2"));
+		assertFalse(Obj.equals("1", null));
+		assertFalse(Obj.equals("", null));
+	}
+
+	@Test
+	void testNotEquals() {
+		assertFalse(Obj.notEquals("1", "1"));
+		assertFalse(Obj.notEquals("", ""));
+		assertFalse(Obj.notEquals(null, null));
+
+		assertTrue(Obj.notEquals("1", "2"));
+		assertTrue(Obj.notEquals("1", null));
+		assertTrue(Obj.notEquals("", null));
 	}
 
 	@Test

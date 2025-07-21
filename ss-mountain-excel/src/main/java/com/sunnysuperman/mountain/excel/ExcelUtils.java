@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -172,7 +171,7 @@ public class ExcelUtils {
 		case NUMERIC: {
 			if (DateUtil.isCellDateFormatted(cell)) {
 				Date date = cell.getDateCellValue();
-				return new SimpleDateFormat(Dates.ISO8601DATE_WITH_MILLS_FORMAT).format(date);
+				return Dates.formatISO8601Date(date);
 			}
 			double d = cell.getNumericCellValue();
 			long l = (long) d;
