@@ -133,7 +133,12 @@ public abstract class AbstractApiMock implements ApiMock {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends ApiMock> T postJSON(String api, Object body) {
-		String bodyAsString = body == null ? null : Jsons.write(body);
+		String bodyAsString;
+		if (body instanceof String) {
+			bodyAsString = (String) body;
+		} else {
+			bodyAsString = body == null ? null : Jsons.write(body);
+		}
 		String url = wrapUrl(api);
 		log("POST: " + api + "\n" + bodyAsString);
 		try {

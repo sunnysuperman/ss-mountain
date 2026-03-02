@@ -2,11 +2,16 @@ package com.sunnysuperman.mountain.evt;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sunnysuperman.mountain.evt.EvtListenerManager.Listener;
 import com.sunnysuperman.mountain.lock.LockHelper;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class EvtConsumer {
+	private static final Logger LOG = LoggerFactory.getLogger(EvtConsumer.class);
+
 	private EvtListenerManager evtListenerManager;
 	private EvtRepositoryManager evtRepositoryManager;
 	private LockHelper lockHelper;
@@ -57,6 +62,9 @@ public class EvtConsumer {
 			Evt evt = (Evt) evtRepository.findById(rawEvt.getId());
 			if (evt == null) {
 				// 任务不存在，有可能被另一个线程处理了
+				if (LOG.isInfoEnabled()) {
+					LOG.info("[evt] 事件已被消费: {}", rawEvt.getId());
+				}
 				done = true;
 				return;
 			}

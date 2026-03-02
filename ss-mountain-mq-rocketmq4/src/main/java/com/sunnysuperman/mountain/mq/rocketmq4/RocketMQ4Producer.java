@@ -98,7 +98,7 @@ public class RocketMQ4Producer implements MQProducer {
 		int maxAttempts = options.getMaxAttempts() > 0 ? options.getMaxAttempts() : props.getMaxAttempts();
 		// 发送
 		if (queue.isVerboseLog() && LOG.isInfoEnabled()) {
-			LOG.info("[MQ] Send message: {}, sync: {}, maxAttempts: {}", msg, sync, maxAttempts);
+			LOG.info("[MQ] Send message: {}, sync: {}, maxAttempts: {}", new String(msg.getBody()), sync, maxAttempts);
 		}
 		if (maxAttempts <= 1) {
 			doSend(msg, sync, queue.isVerboseLog());
