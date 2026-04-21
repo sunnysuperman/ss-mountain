@@ -7,7 +7,7 @@
 		<artifactId>ss-mountain</artifactId>
 		<version>2.7.1</version>
 	</parent>
-	<artifactId>ss-mountain-export</artifactId>
+	<artifactId>ss-mountain-localcache</artifactId>
 	<name>${project.artifactId}</name>
 	<packaging>jar</packaging>
 
@@ -21,19 +21,11 @@
 		<!-- 基础框架 -->
 		<dependency>
 			<groupId>com.sunnysuperman</groupId>
-			<artifactId>ss-mountain-db</artifactId>
+			<artifactId>ss-mountain-base</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.sunnysuperman</groupId>
-			<artifactId>ss-mountain-file</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.sunnysuperman</groupId>
-			<artifactId>ss-mountain-task</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.monitorjbl</groupId>
-			<artifactId>xlsx-streamer</artifactId>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -1,7 +1,7 @@
 package com.sunnysuperman.mountain.db;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -43,7 +43,8 @@ public class BuiltInDefautFieldConverter implements DefaultFieldConverter {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object convertToField(Object columnValue, Class<?> type, Type genericType) {
+	public Object convertToField(Object columnValue, Field field) {
+		Class<?> type = field.getType();
 		// 常见类型
 		if (type == String.class) {
 			return Str.parse(columnValue);
@@ -87,15 +88,15 @@ public class BuiltInDefautFieldConverter implements DefaultFieldConverter {
 				throw new RepositoryException(e);
 			}
 		}
-		return convertToFieldByDefault(columnValue, type, genericType);
+		return convertToFieldByDefault(columnValue, field);
 	}
 
 	protected Object convertToColumnByDefault(Object fieldValue) {
 		return Jsons.write(fieldValue);
 	}
 
-	protected Object convertToFieldByDefault(Object columnValue, Class<?> type, Type genericType) {
-		return Jsons.read(columnValue.toString(), type, genericType);
+	protected Object convertToFieldByDefault(Object columnValue, Field field) {
+		return Jsons.read(columnValue.toString(), field);
 	}
 
 	protected boolean isSimpleType(Class<?> type) {

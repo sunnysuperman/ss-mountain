@@ -20,7 +20,7 @@ public class SearchAutoConfiguration {
 		return new SearchProperties();
 	}
 
-	@SuppressWarnings("squid:S2095")
+	@SuppressWarnings("java:S2095")
 	@Bean
 	public RestHighLevelClient elasticsearchClient(SearchProperties properties) {
 		EsProperties esProps = properties.getEs();

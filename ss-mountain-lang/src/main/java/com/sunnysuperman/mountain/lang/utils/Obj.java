@@ -126,6 +126,11 @@ public final class Obj {
 		return Jsons.read(s, type);
 	}
 
+	public static Map<String, Object> toMap(Object obj) {
+		String s = Jsons.write(obj);
+		return Jsons.readForMap(s);
+	}
+
 	public static boolean isEmpty(Object value) {
 		if (value == null) {
 			return true;

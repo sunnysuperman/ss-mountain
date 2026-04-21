@@ -33,6 +33,10 @@ public class PullPage<T> {
 		return of(content, null, false);
 	}
 
+	public static <T> PullPage<T> of(List<T> content, String marker) {
+		return of(content, marker, Str.isNotEmpty(marker));
+	}
+
 	public static <T> PullPage<T> empty() {
 		return of(null, null, false);
 	}

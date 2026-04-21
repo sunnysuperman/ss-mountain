@@ -204,7 +204,7 @@ class EntityField {
 		if (!relation) {
 			// 3.1非关联对象
 			if (value.getClass() != type) {
-				value = defaultFieldConverter.convertToField(value, type, field.getGenericType());
+				value = defaultFieldConverter.convertToField(value, field);
 			}
 			try {
 				writeMethod.invoke(entity, value);
