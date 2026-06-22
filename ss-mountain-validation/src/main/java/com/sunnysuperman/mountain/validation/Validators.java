@@ -3,6 +3,7 @@ package com.sunnysuperman.mountain.validation;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -200,15 +201,18 @@ public class Validators {
 		List<ValidationField> validationFields = new ArrayList<>();
 		while (type != null) {
 			for (Field field : type.getDeclaredFields()) {
-				// 字段校验条件：
-				// 1.字段配置了校验注解
-				// 2.字段为校验对象(Valid/Validated)
-				List<Annotation> annotations = Stream.of(field.getAnnotations())
-						.filter(anno -> validatorMap.get(anno.annotationType()) != null).collect(Collectors.toList());
-				boolean toValidate = !annotations.isEmpty();
-				boolean cascading = field.isAnnotationPresent(Valid.class) || shouldTypeToValidate(field.getType());
-				if (toValidate || cascading) {
-					validationFields.add(new ValidationField(field, annotations, cascading));
+				if (!Modifier.isStatic(field.getModifiers())) {
+					// 字段校验条件：
+					// 1.字段配置了校验注解
+					// 2.字段为校验对象(Valid/Validated)
+					List<Annotation> annotations = Stream.of(field.getAnnotations())
+							.filter(anno -> validatorMap.get(anno.annotationType()) != null)
+							.collect(Collectors.toList());
+					boolean toValidate = !annotations.isEmpty();
+					boolean cascading = field.isAnnotationPresent(Valid.class) || shouldTypeToValidate(field.getType());
+					if (toValidate || cascading) {
+						validationFields.add(new ValidationField(field, annotations, cascading));
+					}
 				}
 			}
 			type = type.getSuperclass();

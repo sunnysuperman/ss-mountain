@@ -10,11 +10,11 @@
 	<groupId>com.sunnysuperman</groupId>
 	<artifactId>ss-mountain</artifactId>
 	<packaging>pom</packaging>
-	<version>2.7.1</version>
+	<version>2.7.2</version>
 
 	<properties>
 		<!-- 注意此版本号要跟着 project.version 修改 -->
-		<ss-mountain.version>2.7.1</ss-mountain.version>
+		<ss-mountain.version>2.7.2</ss-mountain.version>
 
 		<java.version>11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
