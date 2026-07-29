@@ -3,6 +3,8 @@ package com.sunnysuperman.mountain.db;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import com.sunnysuperman.mountain.lang.enums.CodeAwareEnum;
@@ -74,7 +76,11 @@ public class BuiltInDefautFieldConverter implements DefaultFieldConverter {
 			return Num.parseDecimal(columnValue);
 		}
 		if (type == Date.class) {
-			return Dates.parseDate(columnValue);
+			if (columnValue instanceof LocalDateTime) {
+				return Date.from(((LocalDateTime) columnValue).atZone(ZoneId.systemDefault()).toInstant());
+			} else {
+				return Dates.parseDate(columnValue);
+			}
 		}
 		if (CodeAwareEnum.class.isAssignableFrom(type)) {
 			return CodeAwareEnum.fromCode((Class<? extends CodeAwareEnum>) type,
